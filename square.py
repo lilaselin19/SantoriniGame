@@ -12,7 +12,7 @@ class Square:
         return False
 
     def canMoveTo(self, otherSquare):
-        if otherSquare._level - 1 <= self._level and otherSquare._level < 4:
+        if otherSquare._level - 1 <= self._level and otherSquare._level < 4 and otherSquare._workerName == " ":
             return True
         return False
 

@@ -1,5 +1,6 @@
 from board import *
 from square import *
+from exceptions import *
 
 class Worker:
 
@@ -50,14 +51,14 @@ class Worker:
         return False
 
     def _getDestinationSquare(self, direction):
+        if direction not in Worker.xEffect:
+            raise InvalidDirectionError
         destinationX = self._x + Worker.xEffect[direction]
         destinationY = self._y + Worker.yEffect[direction]
         destinationSquare = self._board.getSquare(destinationX, destinationY)
         return destinationSquare, destinationX, destinationY
 
     def checkValidMove(self, direction):
-        if direction not in Worker.xEffect:
-            raise InvalidMoveError
         destinationSquare, x, y = self._getDestinationSquare(direction)
         if self._currentSquare.canMoveTo(destinationSquare):
             return True
@@ -65,8 +66,6 @@ class Worker:
         raise InvalidMoveError
 
     def checkValidBuild(self, direction):
-        if direction not in Worker.xEffect:
-            raise InvalidMoveError
         destinationSquare, x, y = self._getDestinationSquare(direction)
         if destinationSquare.canBuildOn():
             return True
@@ -84,11 +83,3 @@ class Worker:
     def build(self, direction):
         destinationSquare, x, y = self._getDestinationSquare(direction)
         destinationSquare.build()
-
-
-class InvalidMoveError(Exception):
-    pass
-
-
-class InvalidBuildError(Exception):
-    pass
