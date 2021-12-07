@@ -1,8 +1,10 @@
 import worker
+import board
 
 class Player:
-    def __init__(self, playerType, playerNumber, workerNames):
+    def __init__(self, playerType, playerNumber, myBoard):
         self._workers = list()
+        self._myBoard = myBoard
         if playerType == "human":
             self._decideMoveStrategy = self._humanStrategy
         elif playerType == "random":
@@ -19,7 +21,7 @@ class Player:
             self._createWorker("Z", 3, 3)
 
     def _createWorker(self, name, x, y):
-        w = worker.Worker(name, self, x, y)
+        w = worker.Worker(name, self, x, y, self._myBoard)
         self._workers.append(w)
 
     def _selectWorker(self, name):
