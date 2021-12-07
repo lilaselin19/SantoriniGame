@@ -6,6 +6,16 @@ class Square:
     def __repr__(self):
         return str(self._level) + self._workerName
 
+    def canBuildOn(self):
+        if self._level < 4:
+            return True
+        return False
+
+    def canMoveTo(self, otherSquare):
+        if otherSquare._level - 1 <= self._level and otherSquare._level < 4:
+            return True
+        return False
+
     def build(self):
         if self._level < 4 and self._workerName == " ":
             self._level = self._level + 1
