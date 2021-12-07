@@ -15,14 +15,14 @@ class Worker:
     }
 
     yEffect = {
-        "n": 1,
-        "ne": 1,
+        "n": -1,
+        "ne": -1,
         "e": 0,
         "se": -1,
-        "s": -1,
-        "sw": -1,
+        "s": 1,
+        "sw": 1,
         "w": 0,
-        "nw": 1
+        "nw": -1
     }
 
     def __init__(self, name, myPlayer, x, y, board):
@@ -56,6 +56,8 @@ class Worker:
         return destinationSquare, destinationX, destinationY
 
     def checkValidMove(self, direction):
+        if direction not in Worker.xEffect:
+            raise InvalidMoveError
         destinationSquare, x, y = self._getDestinationSquare(direction)
         if self._currentSquare.canMoveTo(destinationSquare):
             return True
@@ -63,6 +65,8 @@ class Worker:
         raise InvalidMoveError
 
     def checkValidBuild(self, direction):
+        if direction not in Worker.xEffect:
+            raise InvalidMoveError
         destinationSquare, x, y = self._getDestinationSquare(direction)
         if destinationSquare.canBuildOn():
             return True
