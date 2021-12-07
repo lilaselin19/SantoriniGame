@@ -79,7 +79,13 @@ class Worker:
         self._currentSquare.addWorker(self._name)
         self._x = x
         self._y = y
+        self._level = self._currentSquare.getLevel()
 
     def build(self, direction):
         destinationSquare, x, y = self._getDestinationSquare(direction)
         destinationSquare.build()
+
+    def hasWon(self):
+        if self._level == 3:
+            return True
+        return False
