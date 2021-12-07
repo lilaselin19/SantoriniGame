@@ -1,14 +1,17 @@
 from game import Game
 import sys
 
-class Menu():
+
+class Menu:
     def scoreSection(self):
         if self.scoreDisplay == "on":
-            return f", ({self._game._activePlayer.getScores()})"
+            return f", ({self._game.activePlayer.getScores()})"
         else:
             return ""
 
     def handleURN(self):
+        """Handles Undo/ Redo/ Next"""
+        # TODO implement this
         print("undo, redo, or next")
         inr = input("")
         while inr not in ["undo","redo","next"]:
@@ -18,11 +21,11 @@ class Menu():
 
     def run(self):
         while True:
-            print(self._game._board)
+            print(self._game)
             if self.undoRedo == "on":
                 self.handleURN()
-            print(f"Turn: {self._game._turnNumber}, {self._game._activePlayer}{self.scoreSection()}")
-            self._game._activePlayer.doMove()
+            print(f"Turn: {self._game.getTurnNumber()}, {self._game.activePlayer}{self.scoreSection()}")
+            self._game.activePlayer.doMove()
             self._game.nextTurn()
 
     def __init__(self, whiteType,blueType,undoRedo,scoreDisplay):
@@ -31,8 +34,11 @@ class Menu():
         self.scoreDisplay = scoreDisplay
 
 
-def getEl(list, index, default):
-    return list[index] if index < len(list) else default
+def getEl(myList, index, default):
+    """Returns element of list myList at location index.
+        If element at that index does not exist, return default"""
+    return myList[index] if index < len(myList) else default
+
 
 if __name__ == "__main__":
     args = sys.argv
