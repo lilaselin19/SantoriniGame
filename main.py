@@ -23,7 +23,7 @@ class Menu():
                 self.handleURN()
             print(f"Turn: {self._game._turnNumber}, {self._game._activePlayer}{self.scoreSection()}")
             self._game._activePlayer.doMove()
-            break
+            self._game.nextTurn()
 
     def __init__(self, whiteType,blueType,undoRedo,scoreDisplay):
         self._game = Game(whiteType,blueType)
