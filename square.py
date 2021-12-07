@@ -7,7 +7,7 @@ class Square:
         return str(self._level) + self._workerName
 
     def canBuildOn(self):
-        if self._level < 4:
+        if self._level < 4 and self._workerName == " ":
             return True
         return False
 
@@ -15,6 +15,7 @@ class Square:
         if otherSquare._level - 1 <= self._level and otherSquare._level < 4:
             return True
         return False
+
 
     def build(self):
         if self._level < 4 and self._workerName == " ":
@@ -24,3 +25,6 @@ class Square:
 
     def addWorker(self, name):
         self._workerName = name
+
+    def removeWorker(self):
+        self._workerName = " "

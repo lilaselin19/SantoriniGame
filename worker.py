@@ -53,32 +53,33 @@ class Worker:
         destinationX = self._x + Worker.xEffect[direction]
         destinationY = self._y + Worker.yEffect[direction]
         destinationSquare = self._board.getSquare(destinationX, destinationY)
-        return destinationSquare
+        return destinationSquare, destinationX, destinationY
 
     def checkValidMove(self, direction):
-        destinationSquare = self._getDestinationSquare(direction)
+        destinationSquare, x, y = self._getDestinationSquare(direction)
         if self._currentSquare.canMoveTo(destinationSquare):
             return True
 
         raise InvalidMoveError
 
     def checkValidBuild(self, direction):
-        destinationSquare = self._getDestinationSquare(direction)
+        destinationSquare, x, y = self._getDestinationSquare(direction)
         if destinationSquare.canBuildOn():
             return True
 
         raise InvalidBuildError
 
     def move(self, direction):
-        # what pattern can be used instead of giant if else chain?
-        # ie to replace
-            # if direction == "n":
-                #y = y - 1
-        raise NotImplementedError
+        destinationSquare, x, y = self._getDestinationSquare(direction)
+        self._currentSquare.removeWorker()
+        self._currentSquare = destinationSquare
+        self._currentSquare.addWorker(self._name)
+        self._x = x
+        self._y = y
 
     def build(self, direction):
-        # same thing as build
-        raise NotImplementedError
+        destinationSquare, x, y = self._getDestinationSquare(direction)
+        destinationSquare.build()
 
 
 class InvalidMoveError(Exception):
