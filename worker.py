@@ -1,4 +1,4 @@
-import board
+from board import *
 
 class Worker:
     def __init__(self, name, myPlayer, x, y, myBoard):
@@ -10,6 +10,9 @@ class Worker:
         self._level = 0
 
         self._myBoard.getSquare(x,y).addWorker(self._name)
+
+    def __repr__(self):
+        return self._name
 
     def move(self, direction):
         # what pattern can be used instead of giant if else chain?
