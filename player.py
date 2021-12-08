@@ -134,4 +134,15 @@ class Player:
         w.build(buildDirection)
 
     def _heuristicStrategy(self):
-        raise NotImplementedError
+        possibleMoves = self.getAllPossibleMoves()
+        heuristics = list()
+        for move in possibleMoves:
+            w = move[0]
+            moveDirection = move[1]
+            w.move(moveDirection)
+            heuristics.append(self._calculateHeuristic())
+            w.move(inverseDirection[moveDirection])
+
+        bestMove = possibleMoves[heuristics.index(max(heuristics))]
+        bestMove[0].move(bestMove[1])
+        bestMove[0].build(bestMove[2])
