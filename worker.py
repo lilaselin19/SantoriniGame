@@ -5,26 +5,16 @@ from exceptions import *
 class Worker:
 
     xEffect = {
-        "n": 0,
-        "ne": 1,
-        "e": 1,
-        "se": 1,
-        "s": 0,
-        "sw": -1,
-        "w": -1,
-        "nw": -1
+        "n": 0, "ne": 1, "e": 1, "se": 1, "s": 0, "sw": -1, "w": -1, "nw": -1
     }
 
     yEffect = {
-        "n": -1,
-        "ne": -1,
-        "e": 0,
-        "se": 1,
-        "s": 1,
-        "sw": 1,
-        "w": 0,
-        "nw": -1
+        "n": -1, "ne": -1, "e": 0, "se": 1, "s": 1, "sw": 1, "w": 0, "nw": -1
     }
+
+    innerRing = ([1,1], [2,1], [3,1], [3,2], [3,3], [2,3], [1,3], [1,2])
+    outerRing = ([0,0], [0,1], [0,2], [0,3], [0,4], [1,4], [2,4], [3,4],
+              [4,4], [4,3], [4,2], [4,1], [4,0], [3,0], [2,0], [1,0])
 
     def __init__(self, name, myPlayer, x, y, board):
         self._name = name
@@ -49,6 +39,11 @@ class Worker:
             return True
 
         return False
+
+    def _distanceTo(self, otherWorker):
+        dx = abs(self._x - otherWorker._x)
+        dy = abs(self._y - otherWorker._y)
+        return (dx**2 + dy**2)**0.5
 
     def _getDestinationSquare(self, direction):
         if direction not in Worker.xEffect:
@@ -89,3 +84,14 @@ class Worker:
         if self._level == 3:
             return True
         return False
+
+    def getScore(self,w1,w2):
+        heightScore = self._level
+        if [self._x, self._y] in Worker.outerRing:
+            centerScore = 0
+        elif [self._x, self._y] in Worker.innerRing:
+            centerScore = 1
+        else:
+            centerScore = 2
+        distanceScore = 8 - min(self._distanceTo(w1),self._distanceTo(w2))
+        return heightScore + centerScore + distanceScore
