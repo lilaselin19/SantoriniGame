@@ -1,6 +1,7 @@
 from board import *
 from square import *
 from exceptions import *
+import sys
 
 class Worker:
 
@@ -39,11 +40,6 @@ class Worker:
             return True
 
         return False
-
-    def _distanceTo(self, otherWorker):
-        dx = abs(self._x - otherWorker._x)
-        dy = abs(self._y - otherWorker._y)
-        return (dx**2 + dy**2)**0.5
 
     def _getDestinationSquare(self, direction):
         if direction not in Worker.xEffect:
@@ -85,13 +81,21 @@ class Worker:
             return True
         return False
 
-    def getScore(self,w1,w2):
-        heightScore = self._level
+    def getHeightScore(self):
+        if self._level == 3:
+            return sys.maxsize
+        return self._level
+
+    def getCenterScore(self):
         if [self._x, self._y] in Worker.outerRing:
             centerScore = 0
         elif [self._x, self._y] in Worker.innerRing:
             centerScore = 1
         else:
             centerScore = 2
-        distanceScore = 8 - min(self._distanceTo(w1),self._distanceTo(w2))
-        return heightScore + centerScore + distanceScore
+        return centerScore
+
+    def distanceTo(self, otherWorker):
+        dx = abs(self._x - otherWorker._x)
+        dy = abs(self._y - otherWorker._y)
+        return max(dx, dy)

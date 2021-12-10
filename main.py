@@ -5,7 +5,7 @@ import sys
 class Menu:
     def scoreSection(self):
         if self.scoreDisplay == "on":
-            return f", ({self._game.activePlayer.getScores()})"
+            return f", ({self._game.activePlayer.getStringScores()})"
         else:
             return ""
 
@@ -25,6 +25,7 @@ class Menu:
             if self.undoRedo == "on":
                 self.handleURN()
             print(f"Turn: {self._game.getTurnNumber()}, {self._game.activePlayer}{self.scoreSection()}")
+            self._game.hasWon()
             self._game.activePlayer.doMove()
             self._game.nextTurn()
 

@@ -82,11 +82,22 @@ class Player:
 
         return possibleMoves
 
-    def _calculateHeuristic(self):
-        score = 0
+    def _getMultipartScore(self):
+        heightScore = 0
+        centerScore = 0
         for w in self._workers:
-            score += w.getScore(self._opponent._workers[0], self._opponent._workers[1])
-        return score
+            heightScore += w.getHeightScore()
+            centerScore += w.getCenterScore()
+
+        distanceScore = 0
+        for w in self._opponent._workers:
+            distanceScore += 4 - min(self._workers[0].distanceTo(w), self._workers[1].distanceTo(w))
+        return heightScore, centerScore, distanceScore
+
+    def getStringScores(self):
+        heightScore, centerScore, distanceScore = self._getMultipartScore()
+        s = f"{heightScore}, {centerScore}, {distanceScore}"
+        return s
 
     def _humanStrategy(self):
         w = None
@@ -140,7 +151,11 @@ class Player:
             w = move[0]
             moveDirection = move[1]
             w.move(moveDirection)
-            heuristics.append(self._calculateHeuristic())
+
+            heightScore, centerScore, distanceScore = self._getMultipartScore()
+            c1, c2, c3 = 3, 2, 1
+            moveScore = c1* heightScore, + c2 * centerScore + c3 * distanceScore
+            heuristics.append(moveScore)
             w.move(inverseDirection[moveDirection])
 
         bestMove = possibleMoves[heuristics.index(max(heuristics))]
