@@ -2,13 +2,13 @@ import game
 class Caretaker:
     def __init__(self,menu):
         self.menu = menu
-        self.mementos = [self.menu._game.save()]
+        self.mementos = [self.menu.game.save()]
         self.current = 0
 
     def saveNext(self):
         self.current += 1
         self.mementos = self.mementos[:self.current]
-        self.mementos.append(self.menu._game.save())
+        self.mementos.append(self.menu.game.save())
         # print(self.mementos)
 
     def undo(self):

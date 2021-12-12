@@ -1,46 +1,38 @@
 from game import Game
 from memento import *
+from state import *
 import sys
 
 
 class Menu:
     def scoreSection(self):
-        if self.scoreDisplay == "on":
-            return f", ({self._game.activePlayer.getStringScores()})"
+        if self._scoreDisplay == "on":
+            return f", ({self.game.activePlayer.getStringScores()})"
         else:
             return ""
 
+
     def run(self):
         while True:
-            print(self._game)
-            print(f"Turn: {self._game.getTurnNumber()}, {self._game.activePlayer}{self.scoreSection()}")
+            print(self.game)
+            print(f"Turn: {self.game.getTurnNumber()}, {self.game.activePlayer}{self.scoreSection()}")
+
             if self.undoRedo == "on":
-                print("undo, redo, or next")
-                self.state = input("")
-                while self.state not in ["undo", "redo", "next"]:
-                    print("undo, redo, or next")
-                    self.state = input("")
-                if self.state == "undo":
-                    self._game = self.caretaker.undo()
-                    continue
-                elif self.state == "redo":
-                    self._game = self.caretaker.redo()
-                    continue
-                elif self.state == "next":
-                    pass
-            self._game.hasWon()
-            self._game.activePlayer.doMove()
-            if self.state == "next":
-                # print("saving...")
-                self.caretaker.saveNext()
-            self._game.nextTurn()
+                while self.state is inputState:
+                    self.state.process(self)
+
+            else:
+                self.state = nextState()
+
+            self.state.process(self)
+
 
     def __init__(self, whiteType,blueType,undoRedo,scoreDisplay):
-        self._game = Game(whiteType,blueType)
+        self.game = Game(whiteType,blueType)
         self.undoRedo = undoRedo
-        self.scoreDisplay = scoreDisplay
+        self._scoreDisplay = scoreDisplay
         self.caretaker = Caretaker(self)
-        self.state = "next"
+        self.state = inputState()
 
 
 def getEl(myList, index, default):
