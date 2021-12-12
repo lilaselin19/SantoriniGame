@@ -17,8 +17,9 @@ class Menu:
             print(self.game)
             print(f"Turn: {self.game.getTurnNumber()}, {self.game.activePlayer}{self.scoreSection()}")
 
+
             if self.undoRedo == "on":
-                while self.state is inputState:
+                while type(self.state) is inputState:
                     self.state.process(self)
 
             else:
