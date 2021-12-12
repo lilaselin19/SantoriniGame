@@ -1,4 +1,5 @@
 from game import Game
+from memento import *
 import sys
 
 
@@ -9,24 +10,33 @@ class Menu:
         else:
             return ""
 
-    def handleURN(self):
-        """Handles Undo/ Redo/ Next"""
-        # TODO implement this
-        print("undo, redo, or next")
-        inr = input("")
-        while inr not in ["undo","redo","next"]:
-            print("undo, redo, or next")
-            inr = input("")
-        # handle this at some point
+    state = "next"
+    caretaker = Memento()
 
     def run(self):
         while True:
             print(self._game)
-            if self.undoRedo == "on":
-                self.handleURN()
             print(f"Turn: {self._game.getTurnNumber()}, {self._game.activePlayer}{self.scoreSection()}")
+            if self.undoRedo == "on":
+                print("undo, redo, or next")
+                self.state = input("")
+                while self.state not in ["undo", "redo", "next"]:
+                    print("undo, redo, or next")
+                    self.state = input("")
+                if self.state == "undo":
+                    self.caretaker.undo()
+                    self.nextTurn()
+                    continue
+                elif self.state == "redo":
+                    self.caretaker.redo()
+                    self.nextTurn()
+                    continue
+                elif self.state == "next":
+                    pass
             self._game.hasWon()
             self._game.activePlayer.doMove()
+            if self.state == "next":
+                self.caretaker.saveGame()
             self._game.nextTurn()
 
     def __init__(self, whiteType,blueType,undoRedo,scoreDisplay):
