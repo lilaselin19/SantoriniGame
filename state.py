@@ -34,10 +34,14 @@ class nextState(menuState):
 
 class undoState(menuState):
     def process(self, menu):
-        menu.game = menu.caretaker.undo()
+        menu.game, changed = menu.caretaker.undo()
+        if changed:
+            menu.game.nextTurn()
         menu.state = inputState()
 
 class redoState(menuState):
     def process(self, menu):
-        menu.game = menu.caretaker.redo()
+        menu.game, changed = menu.caretaker.redo()
+        if changed:
+            menu.game.nextTurn()
         menu.state = inputState()

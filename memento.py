@@ -12,12 +12,16 @@ class Caretaker:
         # print(self.mementos)
 
     def undo(self):
+        changed = False
         if self.current > 0:
             self.current-=1
-        return self.mementos[self.current]
+            changed = True
+        return self.mementos[self.current], changed
 
     def redo(self):
+        changed = True
         self.current+=1
         if self.current>=len(self.mementos):
             self.current -= 1
-        return self.mementos[self.current]
+            changed = False
+        return self.mementos[self.current], changed
