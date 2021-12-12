@@ -10,9 +10,6 @@ class Menu:
         else:
             return ""
 
-    state = "next"
-    caretaker = Memento()
-
     def run(self):
         while True:
             print(self._game)
@@ -24,25 +21,25 @@ class Menu:
                     print("undo, redo, or next")
                     self.state = input("")
                 if self.state == "undo":
-                    self.caretaker.undo()
-                    self.nextTurn()
+                    self._game = self.caretaker.undo()
                     continue
                 elif self.state == "redo":
-                    self.caretaker.redo()
-                    self.nextTurn()
+                    self._game = self.caretaker.redo()
                     continue
                 elif self.state == "next":
                     pass
             self._game.hasWon()
             self._game.activePlayer.doMove()
             if self.state == "next":
-                self.caretaker.saveGame()
+                # print("saving...")
+                self.caretaker.saveNext()
             self._game.nextTurn()
 
     def __init__(self, whiteType,blueType,undoRedo,scoreDisplay):
         self._game = Game(whiteType,blueType)
         self.undoRedo = undoRedo
         self.scoreDisplay = scoreDisplay
+        self.caretaker = Caretaker(self)
 
 
 def getEl(myList, index, default):

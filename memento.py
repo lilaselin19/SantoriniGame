@@ -1,21 +1,23 @@
 import game
-class NothingToRestoreException(Exception):
-    pass
+class Caretaker:
+    def __init__(self,menu):
+        self.menu = menu
+        self.mementos = [self.menu._game.save()]
+        self.current = 0
 
-class Memento:
-    def __init__(self):
-        self.mementos = []
-        self.current = -1
-
-    def next(self):
-        self.current+=1
-        self.mementos[self.current] =
+    def saveNext(self):
+        self.current += 1
         self.mementos = self.mementos[:self.current]
+        self.mementos.append(self.menu._game.save())
+        # print(self.mementos)
 
     def undo(self):
-        if len(self.mementos) == 0:
-            raise NothingToRestoreException
-        else:
-            return
+        if self.current > 0:
+            self.current-=1
+        return self.mementos[self.current]
 
-    def saveGame(self):
+    def redo(self):
+        self.current+=1
+        if self.current>=len(self.mementos):
+            self.current -= 1
+        return self.mementos[self.current]
