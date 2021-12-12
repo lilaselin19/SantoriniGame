@@ -16,7 +16,6 @@ class Square:
             return True
         return False
 
-
     def build(self):
         if self.level < 4 and self._workerName == " ":
             self.level = self.level + 1

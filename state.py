@@ -1,17 +1,16 @@
 import copy
 
+
 def findState(inputText):
     if inputText == "next":
-        state = nextState()
+        state = next_state
     elif inputText == "undo":
-        state = undoState()
+        state = undo_state
     elif inputText == "redo":
-        state = redoState()
+        state = next_state
     else:
-        state = inputState()
-
+        state = input_state
     return state
-
 
 
 class menuState:
@@ -46,3 +45,9 @@ class redoState(menuState):
         menu.game = copy.deepcopy(menu.caretaker.redo(menu.game.getTurnNumber()))
         menu.game.nextTurn()
         menu.state = inputState()
+
+
+input_state = inputState()
+next_state = nextState()
+undo_state = undoState()
+redo_state = redoState()

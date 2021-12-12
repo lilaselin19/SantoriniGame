@@ -24,7 +24,7 @@ class Menu:
                     self.state.process(self)
 
             else:
-                self.state = nextState()
+                self.state = next_state
 
             self.state.process(self)
 
@@ -34,7 +34,7 @@ class Menu:
         self.undoRedo = undoRedo
         self._scoreDisplay = scoreDisplay
         self.caretaker = Caretaker(self)
-        self.state = inputState()
+        self.state = input_state
 
 
 def getEl(myList, index, default):
