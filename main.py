@@ -13,6 +13,7 @@ class Menu:
 
 
     def run(self):
+        self.game.nextTurn()
         while True:
             print(self.game)
             print(f"Turn: {self.game.getTurnNumber()}, {self.game.activePlayer}{self.scoreSection()}")

@@ -1,3 +1,5 @@
+import copy
+
 def findState(inputText):
     if inputText == "next":
         state = nextState()
@@ -28,16 +30,19 @@ class nextState(menuState):
     def process(self, menu):
         menu.game.hasWon()
         menu.game.activePlayer.doMove()
-        menu.caretaker.saveNext()
+        menu.caretaker.saveNext(menu.game.getTurnNumber())
         menu.game.nextTurn()
+
         menu.state = inputState()
 
 class undoState(menuState):
     def process(self, menu):
-        menu.game = menu.caretaker.undo()
+        menu.game = copy.deepcopy(menu.caretaker.undo(menu.game.getTurnNumber()))
+        menu.game.nextTurn()
         menu.state = inputState()
 
 class redoState(menuState):
     def process(self, menu):
-        menu.game = menu.caretaker.redo()
+        menu.game = copy.deepcopy(menu.caretaker.redo(menu.game.getTurnNumber()))
+        menu.game.nextTurn()
         menu.state = inputState()
