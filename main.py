@@ -40,6 +40,7 @@ class Menu:
         self.undoRedo = undoRedo
         self.scoreDisplay = scoreDisplay
         self.caretaker = Caretaker(self)
+        self.state = "next"
 
 
 def getEl(myList, index, default):
